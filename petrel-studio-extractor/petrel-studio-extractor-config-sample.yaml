@@ -1,0 +1,164 @@
+version: 1
+
+cognite:
+    # Standalone, CWP or both mode, default is CWP if not defined.
+    # Standalone, uses RAW in CDF as backend for extracted objects and state, files are still uploaded to GCS
+    # CWP, default mode and using the CWP API as backend.
+    # Both - Will use both CWP and CDF Raw as backends, same file in GCS will be referred to
+    # Valid options: cwp, cdf, both 
+    backend: "cdf"
+
+    # IF Cognuit API backing CDF tenant and the CDF tenant configured below is different set this one to true
+    # Reason beeing that we cant share the same blob storage for files
+    different-cdf-tenants: false
+
+    # Azure and GCP file/blob storage works a bit differently when uploading files
+    # As CWP and CDF blob storage can be in different tenants we need to be able to define both
+    # Valid options: azure, google
+    cwp-file-storage: "google"
+    cdf-file-storage: "google"
+
+    # Url to CDF Api
+    cdf-base-url: "https://api.cognitedata.com"
+
+    # CDF project / tenant to connect to 
+    cdf-project: "mytenant"
+
+    # Authorization uncomment either 'cdf-api-key' or the 'cdf-oidc-*' options for access to CDF
+    cdf-api-key: "myapikey"
+
+    # OIDC auth options
+    cdf-oidc-authority: "https://login.microsoftonline.com/"
+    cdf-oidc-client-id: "myclientid"
+    cdf-oidc-secret: "mysecret"
+    cdf-oidc-tenant: "mytenant"
+    cdf-oidc-scopes:
+      - "https://api.cognitedata.com/.default"
+
+    # RAW database name, used for object information, if non existent it will be created
+    cdf-raw-database: "psc-connector"
+
+    # CDF Files DataSetId - if 0 or not set files will be created without this id
+    # Note that files created by Cognuit do not respect this setting
+    data-set-id: 0
+    # Url to CWP Api
+    api-base-url: "https://subsurface-console-cognitedata-development.cognite.ai"
+    # Api key, used only when connecting to Cognuit API
+    model-api-key: "askdjhaskjdhasjkhdkas"
+    # State Database, if commented out an in memory state store will be used.
+    state-db: "state\\state.db"
+    # API version check cache. Before an object is serialized from Petrel Studio, a
+    # call goes to the API to verify whether or not it has already been loaded. This
+    # cache holds the last state for this for quicker restarts (since all objects at the
+    # last registered timestamp are checked)
+    api-version-cache: "state\\api-version-cache.dat"
+
+cache:
+    # Enable or disable caching of data to disk, to avoid intermittent failures
+    enable-cache: false
+    
+    # Path to store cached objects, can be specified in two ways:
+    # 1. "C:\cache" - fully qualified
+    # 2. "cache" - relative to installation folder
+    # Note, if remaining disk space is less than 10Gb caching will automatically be turned off.
+    # The user running the connector will need 'Modify' permissions set on this folder.
+    cache-location: "cache"
+
+logging:
+    # Need only be changed if one want to change default values below.
+    # Enable logging to console, only valid when running from the console, true/false 
+    log-to-console: true
+    # Enable logging to file, true/false
+    log-to-file: true
+    # Log Filename, date will be inserted automatically before the "." in the filename
+    log-filename: "logs\log-.log"
+    # Retention, days to keep logs for, logs rotate on a daily basis.
+    retention: 7
+    # One of: verbose, debug, information, warning, error, fatal.
+    # Default is "information" - wrong spelling etc will also cause information to be used.
+    level: "information"
+
+petrel-studio:
+    # Petrel Studio server to connect to
+    server: "Ip-Or-Hostname"
+
+    # License server, if env variable "SLBSLS_LICENSE_FILE" is not set or unavailable
+    # due to running as a windows service then uncomment and specify it here.
+    license-server: "port@HostnameOrIp"
+
+    # Database provider type, the possible value can be either "Oracle" or "SQL Server",
+    # defaults to "SQL Server" if not specified
+    Provider: "SQL Server"
+
+    # Port towards sql server, defaults to 1433
+    Port: 1433
+
+    # Use integrated or username/password to authenticate to server
+    use-integrated-security: true
+
+    # Username and password if not using integrated security.
+    #username: 
+    #password: 
+
+    # Datasource name as defined in Petrel Studio
+    data-source-name:
+
+    # Service name if specified in the Datasource
+    service-name: ""
+
+    # Node ID - string and default is "1"
+    node-id: "1"
+
+    # Time to wait between pulling data, in milliseconds
+    throttle-time: 1000
+
+    # Operation mode, default is "1" if not specified.
+    # 1 - Extract all objects, limited by 'primary-batch-size'
+    # 2 - Extract only objects with business tags or a valid DataStatus, limited by 'primary-batch-size'
+    # 3 - Extract first objects with business tags or a valid DataStatus, limited by 'primary-batch-size'
+    #     then extract any objects limited by "secondary-batch-size"
+    #operation-mode: 1
+
+    # Limit number of objects we extract of an object type before moving to the next type
+    # Valid range 0-10000, default value is 0 meaning no limit
+    #primary-batch-size: 0
+
+    # Limit number of objects we extract of an object type before moving to the next type
+    # Valid range 0-10000, default value is 10, setting this to 0 means no limit
+    #secondary-batch-size: 10
+
+    # Connector instance name or id if you will, allows us to configure studio repositories
+    # to extract data from on the API side.
+    # If you set repositories in config here, it will override configured repositories in the API.
+    #connector-instance: "connectorinstance"
+
+    # Kept for compatibility, or if one want to override repository for a test run.
+    # Repositories to get data from
+    repositories: 
+        - "VOLVEPUB"
+        - "ANOTHERONE"
+
+    # List of data types to extract and send to Cognuit. List shown is the default set.
+    #data-types:
+    #    - "GeologicalTargets"
+    #    - "FaultInterpretations"
+    #    - "RegularHeightFieldSurfaces"
+    #    - "PolylineSets"
+    #    - "PointSets"
+    #    - "MarkerCollections"
+    #    - "HorizonsInterpretation3D"
+    #    - "AutomaticPlanTrajectories"
+    #    - "DxDyTvdTrajectories"
+    #    - "ExplicitPlanTrajectories"
+    #    - "ExplicitTrajectories"
+    #    - "MDInclinationAzimuthTrajectories"
+    #    - "PlannedTrajectories"
+    #    - "XyTvdTrajectories"
+    #    - "XyzPlanTrajectories"
+    #    - "XyzTrajectories"
+    #    - "PointWellLogs"
+    #    - "WellLogs"
+    #    - "CommentWellLogs"
+    #    - "DictionaryWellLogs"
+    #    - "MultitraceWellLogs"
+    #    - "Boreholes"
