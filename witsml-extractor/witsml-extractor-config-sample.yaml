@@ -1,0 +1,28 @@
+extractor:
+  APP_NAME: witsml-extractor
+  MODE: ALL
+  RUNNING_FROM_LOCAL: True
+
+  # cdf
+  CONFIG_DATASET_ID: <id of dataset for temporay files created by the extractor>
+  DATA_DATASET_ID: <id of dataset for the CDF-resources created by the extractor>
+  RAW_DB_FOR_CONFIG: witsml-config
+  RAW_DB_FOR_DATA: witsml-data
+
+cdf:
+  COGNITE_PROJECT: <your cdf project name>
+  TENANT_ID: <the id of your tenant>
+  TOKEN_CLIENT_ID: <client id for the witsml-extractor>
+  TOKEN_CLIENT_SECRET: <client secret for the witsml-extractor>
+  CDF_CLUSTER: <your cdf cluster>
+
+extract:
+  "witsml-server-reference":
+    gateway:
+      host: <witsml server host>
+      user: <witsml user name>
+      password: <witsml password>
+    rules:
+      well.all:
+        schedule: "*/10 * * * *"
+        object_type: WELL
