@@ -16,15 +16,15 @@ logging:
 edm:
   # EDM url: dsisBaseUrl + dsisEdmPath + / + dsisEdmVdb + / + dsisEdmProject
   # Carto url: dsisBaseUrl + dsisPathCartoServices
-  dsisBaseUrl: "https://dwpdsis.abpprd03.dazlmkabpprd03.ienergycloud.solutions"
-  dsisEdmPath: "/dsdataserver/dsl.svc/EDM/500016"
-  dsisEdmVdb: "EDM_SqlServer_EDMPREPROD_SingleSource"
+  dsisBaseUrl: "https://dsisurl.com"
+  dsisEdmPath: "/edm/path/"
+  dsisEdmVdb: "edm_source"
   dsisEdmProject: "ALL_PROJECTS"
   dsisPathCartoServices: "/dsdataserver/cartoservices/"
   dsisAuthType: "token"
-  dsisAuthRealm: "DecisionSpace_Integration_Server"
+  dsisAuthRealm: "YOUR_DSIS_AUTH_REALM"
   dsisAuthClientId: "dsis-console"
-  dsisAuthServer: "https://dssecurity.abpprd03.dazlmkabpprd03.ienergycloud.solutions/auth"
+  dsisAuthServer: "https://your/dsis/auth/server"
   dsisUsername: "dsisusername"
   dsisPassword: "dsispassword"
   dsisParallelism: 3
@@ -37,7 +37,7 @@ edm:
   krontabCompleteExtractSchedule: "0 0 18 * *"
   # About once a week we sync and verify if anything has been deleted
   consistencySchedule: "0 30 18 1,8,15,23 *"
-  # measurementSystem: AkerBP
+  # measurementSystem: yourMeasurementSystem
   #dsisConsumerDebug:
     #- ALL
     #- REQUEST_HEADER

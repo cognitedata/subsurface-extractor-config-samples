@@ -1,21 +1,11 @@
 version: 1
 
 cognite:
-    # Standalone, CWP or both mode, default is CWP if not defined.
-    # Standalone, uses RAW in CDF as backend for extracted objects and state, files are still uploaded to GCS
-    # CWP, default mode and using the CWP API as backend.
-    # Both - Will use both CWP and CDF Raw as backends, same file in GCS will be referred to
-    # Valid options: cwp, cdf, both 
     backend: "cdf"
-
-    # IF Cognuit API backing CDF tenant and the CDF tenant configured below is different set this one to true
     # Reason beeing that we cant share the same blob storage for files
     different-cdf-tenants: false
-
     # Azure and GCP file/blob storage works a bit differently when uploading files
-    # As CWP and CDF blob storage can be in different tenants we need to be able to define both
     # Valid options: azure, google
-    cwp-file-storage: "google"
     cdf-file-storage: "google"
 
     # Url to CDF Api
@@ -39,12 +29,7 @@ cognite:
     cdf-raw-database: "psc-connector"
 
     # CDF Files DataSetId - if 0 or not set files will be created without this id
-    # Note that files created by Cognuit do not respect this setting
     data-set-id: 0
-    # Url to CWP Api
-    api-base-url: "https://subsurface-console-cognitedata-development.cognite.ai"
-    # Api key, used only when connecting to Cognuit API
-    model-api-key: "askdjhaskjdhasjkhdkas"
     # State Database, if commented out an in memory state store will be used.
     state-db: "state\\state.db"
     # API version check cache. Before an object is serialized from Petrel Studio, a
@@ -138,7 +123,7 @@ petrel-studio:
         - "VOLVEPUB"
         - "ANOTHERONE"
 
-    # List of data types to extract and send to Cognuit. List shown is the default set.
+    # List of data types to extract and send to CDF. List shown is the default set.
     #data-types:
     #    - "GeologicalTargets"
     #    - "FaultInterpretations"
