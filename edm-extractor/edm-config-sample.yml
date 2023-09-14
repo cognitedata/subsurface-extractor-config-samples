@@ -1,9 +1,8 @@
 cognite:
   apiUrl: "https://api.cognitedata.com"
-  apiKey: "someapikey"
   # clientId: "34efdeoefjefe23"
   # clientSecret: "zecret"
-  # token_url: https://login.microsoftonline.com/...
+  # token_url: https://login.windows.net/<AAD tenant uuid>/oauth2/v2.0/token
   project: "yourtenantprojectname"
   rawDatabaseName: "EdmConnector"
   # queueBufferSize: 500
@@ -34,7 +33,7 @@ edm:
   startPadding: 180
   # connectTimeout: 5
   # readTimeout: 120
-  krontabCompleteExtractSchedule: "0 0 18 * *"
+  crontabComplete: "0 0 18 * *"
   # About once a week we sync and verify if anything has been deleted
   consistencySchedule: "0 30 18 1,8,15,23 *"
   # measurementSystem: yourMeasurementSystem
