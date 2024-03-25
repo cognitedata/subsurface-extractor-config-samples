@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # Scheduler cannot be scheduled. Only one scheduler per deployment
+  scheduler:
+    image: eu.gcr.io/cognite-registry/witsml-connector:<version>
+    volumes:
+      - <path_to_your_configuration_file.yaml>:/config.yaml
+    environment: 
+      - EXTRACTOR_MODE=SCHEDULER
+    depends_on:
+      - queue
+  
+  # SOAP workers can be scaled depending on the amount of data to be extracted.
+  worker-1:
+    image: eu.gcr.io/cognite-registry/witsml-connector:<version>
+    volumes:
+      - <path_to_your_configuration_file.yaml>:/config.yaml
+    environment: 
+      - EXTRACTOR_MODE=WORKER
+    depends_on:
+      - scheduler
+
+  worker-2:
+    image: eu.gcr.io/cognite-registry/witsml-connector:<version>
+    volumes:
+      - <path_to_your_configuration_file.yaml>:/config.yaml
+    environment: 
+      - EXTRACTOR_MODE=WORKER
+    depends_on:
+      - scheduler
+  
+  queue:
+    image: postgres:alpine
+    volumes:
+      - pgres-queue:/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=<postgres_password>
+      - POSTGRES_USER=<postgres_username>
+      - PGDATA=/var/lib/postgresql/data/pgdata
+
+volumes:
+  pgres-queue: 
+    name: pgres-queue

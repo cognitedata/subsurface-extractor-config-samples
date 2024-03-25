@@ -1,9 +1,6 @@
 extractor:
   APP_NAME: witsml-extractor
-  MODE: ALL
-  RUNNING_FROM_LOCAL: True
-
-  # cdf
+  MODE: SIMPLE
   CONFIG_DATASET_ID: <id of dataset for temporay files created by the extractor>
   DATA_DATASET_ID: <id of dataset for the CDF-resources created by the extractor>
   RAW_DB_FOR_CONFIG: witsml-config
@@ -26,3 +23,7 @@ extract:
       well.all:
         schedule: "*/10 * * * *"
         object_type: WELL
+
+      wellbores.all:
+        schedule: "*/10 * * * *"
+        object_type: WELLBORE
