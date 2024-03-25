@@ -1,0 +1,47 @@
+extractor:
+  APP_NAME: witsml-dev
+  MODE: SIMPLE 
+  CONFIG_DATASET_ID: <id of dataset for temporay files created by the extractor>
+  DATA_DATASET_ID: <id of dataset for the CDF-resources created by the extractor>
+  RAW_DB_FOR_CONFIG: witsml-config
+  RAW_DB_FOR_DATA: witsml-data
+  
+queue:
+  queue_type: PSQL
+  host: queue
+  database: witsml_config
+  user: <postgres_username>
+  password: <postgres_password>
+
+cdf:
+  COGNITE_PROJECT: <your cdf project name>
+  TENANT_ID: <the id of your tenant>
+  TOKEN_CLIENT_ID: <client id for the witsml-extractor>
+  TOKEN_CLIENT_SECRET: <client secret for the witsml-extractor>
+  CDF_CLUSTER: <your cdf cluster>
+  
+extract:
+  "witsml-server-reference":
+    gateway:
+      host: <witsml server host>
+      user: <witsml user name>
+      password: <witsml password>
+    
+    rules:
+      well.all:
+        schedule: "*/10 * * * *"
+        object_type: WELL
+
+      wellbores.all:
+        schedule: "*/10 * * * *"
+        object_type: WELLBORE
+
+      # Example query for historical records - Log object
+      log.historical:
+        schedule: "0 1 * * *"
+        object_type: LOG
+        base_query: <logs xmlns="http://www.witsml.org/schemas/1series" version="1.4.1.1"><log uidWell=""><objectGrowing>false</objectGrowing></log></logs>
+        config:
+          ingest_to_clean: True
+          load_deltas: True
+          

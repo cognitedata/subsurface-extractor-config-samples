@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  extractor:
+    image: eu.gcr.io/cognite-registry/witsml-connector:<version>
+    volumes:
+      - <path_to_your_configuration_file.yaml>:/config.yaml
+    environment: 
+      - EXTRACTOR_MODE=SIMPLE
+    depends_on:
+      - queue
+  
+  queue:
+    image: postgres:alpine
+    volumes:
+      - pgres-queue:/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=<postgres_password>
+      - POSTGRES_USER=<postgres_username>
+      - PGDATA=/var/lib/postgresql/data/pgdata
+
+volumes:
+  pgres-queue: 
+    name: pgres-queue
